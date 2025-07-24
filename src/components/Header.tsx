@@ -1,6 +1,6 @@
 import searchicon from "../assets/search.svg";
 import book from "../assets/book.svg";
-import github from "../assets/github.svg";
+// import github from "../assets/github.svg";
 
 interface HeaderProps {
   word: string;
