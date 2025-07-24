@@ -37,14 +37,14 @@ export function Header({ word, setWord, onSearch }: HeaderProps) {
           </button>
         </form>
 
-        <a
+        {/* <a
           href="https://github.com/Xeven777"
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-circle btn-neutral"
         >
           <img src={github} alt="Github" />
-        </a>
+        </a> */}
       </div>
     </div>
   );
