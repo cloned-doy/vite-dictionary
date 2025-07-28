@@ -4,24 +4,36 @@ import { WordData } from "../types/word";
 export const useSearchWord = () => {
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<WordData[]>([]);
-  const [audioSrc, setAudioSrc] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
-  const searchWord = async (word: string) => {
+  const searchWord = async (lang: string, word: string) => {
     setLoading(true);
+    setError(null);
+
     try {
-      const res = await fetch(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`,
-      );
-      const data = await res.json();
+      const url = `https://api.batakko.com/entries/${lang}=${encodeURIComponent(word)}`;
+      const response = await fetch(url);
+
+      const contentType = response.headers.get("content-type") || "";
+
+      if (!contentType.includes("application/json")) {
+        const raw = await response.text();
+        console.error("❌ Server returned non-JSON:", raw);
+        setError("Unexpected response format. Check console.");
+        setResults([]);
+        return;
+      }
+
+      const data: WordData[] = await response.json();
       setResults(data);
-      const firstAudio = data[0]?.phonetics?.find((p: any) => p.audio)?.audio;
-      setAudioSrc(firstAudio || "");
-    } catch (e) {
-      console.error(e);
+    } catch (err) {
+      console.error("❌ Fetch or parse error:", err);
+      setError("Failed to fetch or parse data.");
+      setResults([]);
     } finally {
       setLoading(false);
     }
   };
 
-  return { loading, results, searchWord, audioSrc };
+  return { loading, results, error, searchWord };
 };

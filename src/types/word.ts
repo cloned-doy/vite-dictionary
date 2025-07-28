@@ -1,25 +1,10 @@
-export interface Phonetic {
-  text: string;
-  audio?: string;
-}
-
-export interface Definition {
-  definition: string;
-  example: string;
-  synonyms: string[];
-  antonyms: string[];
-}
-
-export interface Meaning {
-  partOfSpeech: string;
-  definitions: Definition[];
-}
-
 export interface WordData {
-  word: string;
-  phonetic: string;
-  phonetics: Phonetic[];
-  origin: string;
-  meanings: Meaning[];
-  sourceUrls: string[];
+  id?: string | null;
+  traditional: string;
+  simplified: string;
+  pinyin: string;
+  english: string;
+  indonesian: string;
+  part_of_speech?: string | null;
+  notes?: string | null;
 }

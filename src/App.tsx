@@ -3,29 +3,22 @@ import { Header } from "./components/Header";
 import { WordResults } from "./components/WordResults";
 import { useSearchWord } from "./hooks/useSearchWord";
 
-function App() {
+export default function App() {
   const [word, setWord] = useState("");
-  const { loading, results, searchWord } = useSearchWord();
+  const { loading, results, error, searchWord } = useSearchWord();
 
-  const handleSearch = () => {
-    if (word.trim()) {
-      searchWord(word);
-    }
+  const handleSearch = (lang: string, keyword: string) => {
+    searchWord(lang, keyword);
   };
 
   return (
-    <div className="max-w-4xl w-full mx-auto flex flex-col items-center justify-center py-4 px-2">
+    <div className="min-h-screen bg-base-100">
       <Header word={word} setWord={setWord} onSearch={handleSearch} />
 
-      {!loading ? (
-        <WordResults results={results} />
-      ) : (
-        <div className="w-full h-80 flex items-center justify-center">
-          <span className="loading loading-infinity loading-lg" />
-        </div>
-      )}
+      {loading && <p className="text-center mt-4">Loading...</p>}
+      {error && <p className="text-center text-red-400 mt-4">{error}</p>}
+
+      <WordResults results={results} />
     </div>
   );
 }
-
-export default App;
